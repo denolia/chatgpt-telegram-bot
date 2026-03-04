@@ -41,11 +41,11 @@ export function handleTextMessage(
     });
     const tgMessageId = tgMessage.message_id;
 
-    if (selectedModel.id === "dall-e-3") {
+    if (selectedModel.returnType === "image") {
       try {
         // Generate image from prompt
         const response = await openai.images.generate({
-          model: "dall-e-3",
+          model: selectedModel.id,
           prompt: ctx.message.text,
           n: 1, // number of images, it supports rn only 1 anyway
           size: "1024x1024",

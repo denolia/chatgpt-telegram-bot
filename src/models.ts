@@ -5,6 +5,7 @@ const MODELS_FILE = "./models.json";
 export interface Model {
   name: string;
   id: string;
+  returnType: "text" | "image";
 }
 
 export let availableModels: Model[] = [];
