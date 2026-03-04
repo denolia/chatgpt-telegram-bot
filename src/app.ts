@@ -13,9 +13,12 @@ import { showModelButtons } from "./handlers/showModelButtons";
 import { startBot } from "./handlers/startBot";
 
 import { loadRegisteredUsers } from "./registeredUsers";
-import { ModelIds, ModelName, Username } from "./types";
+import { loadModels } from "./models";
+import { ModelName, Username } from "./types";
+import { availableModels } from "./models";
 
 loadRegisteredUsers();
+loadModels();
 
 const bot_token = process.env.BOT_TOKEN;
 if (!bot_token) {
@@ -47,7 +50,10 @@ bot.command("newchat", createNewChat(userContext));
 
 bot.command("setmodel", showModelButtons());
 
-bot.hears(Object.keys(ModelIds), commandSetModel(userContext, currentModels));
+bot.hears(
+  availableModels.map((m) => m.name),
+  commandSetModel(userContext, currentModels),
+);
 
 bot.on(message("text"), handleTextMessage(openai, userContext, currentModels));
 

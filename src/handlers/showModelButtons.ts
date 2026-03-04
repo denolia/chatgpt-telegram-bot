@@ -1,6 +1,7 @@
 import { Markup } from "telegraf";
 import { checkUser } from "../checkUser";
-import { ContextType, ModelIds } from "../types";
+import { ContextType } from "../types";
+import { availableModels } from "../models";
 
 export function showModelButtons() {
   return (ctx: ContextType) => {
@@ -11,7 +12,7 @@ export function showModelButtons() {
     return ctx.reply(
       "Meow! 😸 Select the model",
       Markup.keyboard(
-        Object.keys(ModelIds).map((model) => Markup.button.text(model)),
+        availableModels.map((model) => Markup.button.text(model.name)),
       )
         .oneTime(true)
         .resize(),

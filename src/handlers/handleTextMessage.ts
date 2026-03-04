@@ -1,7 +1,8 @@
 import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { checkUser } from "../checkUser";
-import { ModelIds, ModelName, Username } from "../types";
+import { ModelName, Username } from "../types";
+import { availableModels } from "../models";
 
 export function handleTextMessage(
   openai: OpenAI,
@@ -19,9 +20,10 @@ export function handleTextMessage(
       return ctx.reply("😾 Who are you?!");
     }
 
-    const selectedUserModel = currentModels[username] ?? ModelName.GPT4_0;
+    const selectedUserModelName = currentModels[username] ?? availableModels[0]?.name;
+    const selectedModel = availableModels.find(m => m.name === selectedUserModelName) ?? availableModels[0];
 
-    console.log("Got a message from:", username, "model:", selectedUserModel);
+    console.log("Got a message from:", username, "model:", selectedModel.name);
 
     const requestMessage: ChatCompletionMessageParam = {
       role: "user",
@@ -39,11 +41,11 @@ export function handleTextMessage(
     });
     const tgMessageId = tgMessage.message_id;
 
-    if (selectedUserModel === ModelName.DALLE_3) {
+    if (selectedModel.id === "dall-e-3") {
       try {
         // Generate image from prompt
         const response = await openai.images.generate({
-          model: ModelIds[ModelName.DALLE_3],
+          model: "dall-e-3",
           prompt: ctx.message.text,
           n: 1, // number of images, it supports rn only 1 anyway
           size: "1024x1024",
@@ -51,7 +53,7 @@ export function handleTextMessage(
         // no usage info in dalle-3 response
         // console.log("Usage:");
 
-        const image_url = response?.data[0]?.url;
+        const image_url = response?.data?.[0]?.url;
 
         if (image_url) {
           await ctx.replyWithPhoto(image_url, {
@@ -71,7 +73,7 @@ export function handleTextMessage(
       // text reply
       try {
         const completion = await openai.chat.completions.create({
-          model: ModelIds[selectedUserModel],
+          model: selectedModel.id,
           messages: userContext[username],
         });
         console.log("Usage:", completion.usage);
