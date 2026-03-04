@@ -13,12 +13,10 @@ import { showModelButtons } from "./handlers/showModelButtons";
 import { startBot } from "./handlers/startBot";
 
 import { loadRegisteredUsers } from "./registeredUsers";
-import { loadModels } from "./models";
 import { ModelName, Username } from "./types";
 import { availableModels } from "./models";
 
 loadRegisteredUsers();
-loadModels();
 
 const bot_token = process.env.BOT_TOKEN;
 if (!bot_token) {

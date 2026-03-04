@@ -20,8 +20,11 @@ export function handleTextMessage(
       return ctx.reply("😾 Who are you?!");
     }
 
-    const selectedUserModelName = currentModels[username] ?? availableModels[0]?.name;
-    const selectedModel = availableModels.find(m => m.name === selectedUserModelName) ?? availableModels[0];
+    const selectedUserModelName =
+      currentModels[username] ?? availableModels[0]?.name;
+    const selectedModel =
+      availableModels.find((m) => m.name === selectedUserModelName) ??
+      availableModels[0];
 
     console.log("Got a message from:", username, "model:", selectedModel.name);
 
@@ -51,23 +54,36 @@ export function handleTextMessage(
           size: "1024x1024",
         });
         // no usage info in dalle-3 response
-        // console.log("Usage:");
 
         const image_url = response?.data?.[0]?.url;
+        const b64_json = response?.data?.[0]?.b64_json;
 
-        if (image_url) {
-          await ctx.replyWithPhoto(image_url, {
+        if (image_url || b64_json) {
+          const photo = image_url ?? {
+            source: Buffer.from(b64_json!, "base64"),
+          };
+          await ctx.replyWithPhoto(photo, {
             reply_to_message_id: ctx.message.message_id,
           });
           await ctx.telegram.deleteMessage(ctx.chat.id, tgMessageId);
           console.log("Responded with an image to", username);
         } else {
-          await ctx.editMessageText("Meow! 😿 I cannot generate an image");
+          await ctx.telegram.editMessageText(
+            ctx.chat.id,
+            tgMessageId,
+            undefined,
+            "Meow! 😿 I cannot generate an image",
+          );
           console.log("Could not generate an image response to", username);
         }
       } catch (e: any) {
         console.error("Error generating image:", e);
-        await ctx.editMessageText("Meow! 😿 An error happened:\n" + e.message);
+        await ctx.telegram.editMessageText(
+          ctx.chat.id,
+          tgMessageId,
+          undefined,
+          "Meow! 😿 An error happened:\n" + e.message,
+        );
       }
     } else {
       // text reply
@@ -106,7 +122,12 @@ export function handleTextMessage(
         }
       } catch (e: any) {
         console.error("Error generating response:", e);
-        await ctx.editMessageText("Meow! 😿 An error happened:\n" + e.message);
+        await ctx.telegram.editMessageText(
+          ctx.chat.id,
+          tgMessageId,
+          undefined,
+          "Meow! 😿 An error happened:\n" + e.message,
+        );
       }
     }
   };

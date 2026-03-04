@@ -1,0 +1,19 @@
+{
+  "models": [
+    {
+      "name": "gpt-5-mini",
+      "id": "gpt-5-mini",
+      "returnType": "text"
+    },
+    {
+      "name": "gpt-5.2",
+      "id": "gpt-5.2",
+      "returnType": "text"
+    },
+    {
+      "name": "image gpt-image-1.5",
+      "id": "gpt-image-1.5",
+      "returnType": "image"
+    }
+  ]
+}

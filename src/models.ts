@@ -1,6 +1,4 @@
-import fs from "fs";
-
-const MODELS_FILE = "./models.json";
+import modelsData from "./configs/models.json";
 
 export interface Model {
   name: string;
@@ -8,13 +6,5 @@ export interface Model {
   returnType: "text" | "image";
 }
 
-export let availableModels: Model[] = [];
+export const availableModels: Model[] = modelsData.models as Model[];
 
-export function loadModels() {
-  if (!fs.existsSync(MODELS_FILE)) {
-    throw new Error("Please provide a models.json file");
-  } else {
-    const data = fs.readFileSync(MODELS_FILE, "utf8");
-    availableModels = JSON.parse(data).models;
-  }
-}

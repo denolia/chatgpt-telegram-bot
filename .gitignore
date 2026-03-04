@@ -3,4 +3,4 @@ node_modules
 ./dist/**
 /dist/app.js
 /registered-users.json
-/models.json
+/dist/
