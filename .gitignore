@@ -4,3 +4,4 @@ node_modules
 /dist/app.js
 /registered-users.json
 /dist/
+.idea
