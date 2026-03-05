@@ -11,11 +11,7 @@ import { handleTextMessage } from "./handlers/handleTextMessage";
 import { commandSetModel } from "./handlers/setModel";
 import { showModelButtons } from "./handlers/showModelButtons";
 import { startBot } from "./handlers/startBot";
-import {
-  addUserCommand,
-  reloadBotCommand,
-  removeUserCommand,
-} from "./handlers/adminCommands";
+import { addUserCommand, removeUserCommand } from "./handlers/adminCommands";
 
 import { loadRegisteredUsers } from "./users";
 import { loadAdminUsers } from "./adminUsers";
@@ -54,7 +50,6 @@ bot.start(startBot());
 bot.command("newchat", createNewChat(userContext));
 bot.command("adduser", addUserCommand());
 bot.command("removeuser", removeUserCommand());
-bot.command("reloadbot", reloadBotCommand(bot));
 
 bot.command("setmodel", showModelButtons());
 
