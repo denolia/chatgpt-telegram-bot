@@ -1,10 +1,11 @@
-import { registeredUsers } from "./registeredUsers";
+import { isRegisteredUser, normalizeUsername } from "./users";
 import { ContextType } from "./types";
 
 export function checkUser(ctx: ContextType) {
-  const username = ctx.update.message.from.username;
+  const rawUsername = ctx.update.message.from.username;
+  const username = rawUsername ? normalizeUsername(rawUsername) : undefined;
 
-  if (!username || !registeredUsers.includes(username)) {
+  if (!username || !isRegisteredUser(username)) {
     console.log(`User ${username} is not registered`);
     return {
       notRegisteredReply: ctx.reply(

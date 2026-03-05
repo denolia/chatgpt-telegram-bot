@@ -22,10 +22,27 @@ Telegram bot that provides access to Ghat GPT.
       ]
     }
     ```
+1. Create a file `admins.json` with the format:
+    ```
+    {
+      "admins": [
+        "admin_username1",
+        "admin_username2"
+      ]
+    }
+    ```
 1. Build and run the app
     ```
     tsc -p . && node dist/app.js
     ```
+
+### Admin commands
+
+Admins from `admins.json` can manage users and reload the bot:
+
+- `/adduser <username>` add a user to `registered-users.json`
+- `/removeuser <username>` remove a user from `registered-users.json`
+- `/reloadbot` reload `registered-users.json`, `admins.json`, and restart polling
 
 ### Stack
 

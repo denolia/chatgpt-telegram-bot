@@ -11,12 +11,19 @@ import { handleTextMessage } from "./handlers/handleTextMessage";
 import { commandSetModel } from "./handlers/setModel";
 import { showModelButtons } from "./handlers/showModelButtons";
 import { startBot } from "./handlers/startBot";
+import {
+  addUserCommand,
+  reloadBotCommand,
+  removeUserCommand,
+} from "./handlers/adminCommands";
 
-import { loadRegisteredUsers } from "./registeredUsers";
+import { loadRegisteredUsers } from "./users";
+import { loadAdminUsers } from "./adminUsers";
 import { ModelName, Username } from "./types";
 import { availableModels } from "./models";
 
 loadRegisteredUsers();
+loadAdminUsers();
 
 const bot_token = process.env.BOT_TOKEN;
 if (!bot_token) {
@@ -45,6 +52,9 @@ const currentModels: Record<Username, ModelName | undefined> = {};
 bot.start(startBot());
 
 bot.command("newchat", createNewChat(userContext));
+bot.command("adduser", addUserCommand());
+bot.command("removeuser", removeUserCommand());
+bot.command("reloadbot", reloadBotCommand(bot));
 
 bot.command("setmodel", showModelButtons());
 
