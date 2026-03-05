@@ -1,6 +1,6 @@
 import { OpenAI } from "openai";
 import { checkUser } from "../checkUser";
-import { availableModels } from "../models";
+import { availableModels, ModelReturnType } from "../models";
 import { ModelName, Username } from "../types";
 
 export function handlePhotoMessage(
@@ -19,7 +19,9 @@ export function handlePhotoMessage(
     }
     const modelId =
       currentModels[username] ??
-      availableModels.find((model) => model.returnType === "multimodal")?.id;
+      availableModels.find(
+        (model) => model.returnType === ModelReturnType.MULTIMODAL,
+      )?.id;
     if (!modelId) {
       console.error("No model defined to process photo", ctx.message.from);
       return ctx.reply("🙀 No model defined to process photo");

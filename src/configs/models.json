@@ -3,12 +3,12 @@
     {
       "name": "gpt-5-mini",
       "id": "gpt-5-mini",
-      "returnType": "text"
+      "returnType": "multimodal"
     },
     {
       "name": "gpt-5.2",
       "id": "gpt-5.2",
-      "returnType": "text"
+      "returnType": "multimodal"
     },
     {
       "name": "image gpt-image-1.5",

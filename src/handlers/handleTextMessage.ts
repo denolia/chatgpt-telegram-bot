@@ -2,7 +2,7 @@ import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { checkUser } from "../checkUser";
 import { ModelName, Username } from "../types";
-import { availableModels } from "../models";
+import { availableModels, ModelReturnType } from "../models";
 
 export function handleTextMessage(
   openai: OpenAI,
@@ -44,7 +44,7 @@ export function handleTextMessage(
     });
     const tgMessageId = tgMessage.message_id;
 
-    if (selectedModel.returnType === "image") {
+    if (selectedModel.returnType === ModelReturnType.IMAGE) {
       try {
         // Generate image from prompt
         const response = await openai.images.generate({
