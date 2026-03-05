@@ -1,7 +1,12 @@
 import { OpenAI } from "openai";
 import { checkUser } from "../checkUser";
+import { availableModels } from "../models";
+import { ModelName, Username } from "../types";
 
-export function handlePhotoMessage(openai: OpenAI) {
+export function handlePhotoMessage(
+  openai: OpenAI,
+  currentModels: Record<Username, ModelName | undefined>,
+) {
   return async (ctx: any) => {
     const { notRegisteredReply, registered, username } = checkUser(ctx);
     if (!registered && notRegisteredReply) {
@@ -10,9 +15,15 @@ export function handlePhotoMessage(openai: OpenAI) {
 
     if (!username) {
       console.error("Cannot find username", ctx.message.from);
-      return ctx.reply("😾 Who are you?!");
+      return ctx.reply("🙀 Sorry, who are you?!");
     }
-
+    const modelId =
+      currentModels[username] ??
+      availableModels.find((model) => model.returnType === "multimodal")?.id;
+    if (!modelId) {
+      console.error("No model defined to process photo", ctx.message.from);
+      return ctx.reply("🙀 No model defined to process photo");
+    }
     console.log("Got a photo from:", username);
 
     const tgMessage = await ctx.reply("🐈🤔‍Mrrrrrrr...", {
@@ -33,7 +44,7 @@ export function handlePhotoMessage(openai: OpenAI) {
 
         if (link.href) {
           const completion = await openai.chat.completions.create({
-            model: "gpt-4-vision-preview",
+            model: modelId,
             messages: [
               {
                 role: "user",

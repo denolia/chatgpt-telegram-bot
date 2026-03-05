@@ -60,7 +60,7 @@ bot.hears(
 
 bot.on(message("text"), handleTextMessage(openai, userContext, currentModels));
 
-bot.on(message("photo"), handlePhotoMessage(openai));
+bot.on(message("photo"), handlePhotoMessage(openai, currentModels));
 
 bot.launch().then();
 
