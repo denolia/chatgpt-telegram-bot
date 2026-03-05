@@ -1,5 +1,3 @@
-import { Telegraf } from "telegraf";
-import { loadAdminUsers } from "../adminUsers";
 import { checkAdmin } from "../checkAdmin";
 import {
   addRegisteredUser,
@@ -17,7 +15,9 @@ function parseUsernameArg(ctx: TextContextType) {
   const username = getCommandArg(ctx);
   if (!username) {
     return {
-      errorReply: ctx.reply("😾 Please provide a username. Example: /adduser @john"),
+      errorReply: ctx.reply(
+        "😾 Please provide a username. Example: /adduser @john",
+      ),
     };
   }
 
@@ -65,27 +65,5 @@ export function removeUserCommand() {
 
     loadRegisteredUsers();
     return ctx.reply(`😸 Removed ${username} from registered-users.json`);
-  };
-}
-
-export function reloadBotCommand(bot: Telegraf) {
-  return async (ctx: TextContextType) => {
-    const { admin, notAdminReply } = checkAdmin(ctx);
-    if (!admin && notAdminReply) {
-      return notAdminReply;
-    }
-
-    await ctx.reply("😺 Reloading bot...");
-
-    try {
-      loadRegisteredUsers();
-      loadAdminUsers();
-      bot.stop("ADMIN_RELOAD");
-      await bot.launch();
-      return ctx.reply("😸 Bot reloaded");
-    } catch (error: any) {
-      console.error("Error reloading bot", error);
-      return ctx.reply(`😿 Could not reload bot: ${error.message}`);
-    }
   };
 }
