@@ -12,14 +12,14 @@
     "build": "tsc -p ."
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "openai": "^4.24.6",
+    "dotenv": "^17.3.1",
+    "openai": "^6.26.0",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
-    "@types/node": "^20.12.2",
-    "prettier": "^3.2.5",
-    "tsx": "^4.7.1",
-    "typescript": "5.4.3"
+    "@types/node": "^25.3.3",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.3"
   }
 }
